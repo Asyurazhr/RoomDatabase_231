@@ -55,3 +55,26 @@ fun DetailSiswaScreen(
     val uiState by viewModel.uiDetailState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
 
+    Scaffold(
+        topBar = {
+            SiswaTopAppBar(
+                title = stringResource(DestinasiDetailSiswa.titleRes),
+                canNavigateBack = true,
+                navigateUp = navigateBack
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { navigateToEditItem(uiState.detailSiswa.id) },
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = stringResource(R.string.update),
+                )
+            }
+        },
+        modifier = modifier
+    ) { innerPadding ->
+
