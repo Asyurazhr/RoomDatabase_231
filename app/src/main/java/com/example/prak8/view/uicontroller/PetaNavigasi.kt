@@ -16,3 +16,7 @@ import com.example.prak8.view.route.DestinasiHome
 
 
 @Composable
+fun SiswaApp(navController: NavHostController= rememberNavController(), modifier: Modifier){
+    HostNavigasi(navController = navController)
+}
+
