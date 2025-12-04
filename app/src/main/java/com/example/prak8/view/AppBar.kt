@@ -19,3 +19,19 @@ fun SiswaTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     onNavigateUp: (() -> Unit)? = null
 ) {
+    TopAppBar(
+        title = { Text(text = title) },
+        navigationIcon = {
+            if (canNavigateBack && onNavigateUp != null) {
+                IconButton(onClick = onNavigateUp) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = null
+                    )
+                }
+            }
+        },
+        scrollBehavior = scrollBehavior,
+        colors = TopAppBarDefaults.topAppBarColors()
+    )
+}
