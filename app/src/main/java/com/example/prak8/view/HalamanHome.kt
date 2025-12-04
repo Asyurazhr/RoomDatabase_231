@@ -1,5 +1,6 @@
 package com.example.prak8.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,7 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.prak8.R
 import com.example.prak8.room.Siswa
 import com.example.prak8.view.route.DestinasiHome
-import com.example.prak8.view.uicontroller.SiswaTopAppBar
+import com.example.prak8.view.uicontroller.SiswaTopAppBar   // <-- penting
 import com.example.prak8.viewmodel.HomeViewModel
 import com.example.prak8.viewmodel.provider.PenyediaViewModel
 
@@ -43,9 +44,10 @@ import com.example.prak8.viewmodel.provider.PenyediaViewModel
 @Composable
 fun HomeScreen(
     navigateToItemEntry: () -> Unit,
+    navigateToItemUpdate: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
-){
+) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
@@ -71,33 +73,37 @@ fun HomeScreen(
         }
     ) { innerPadding ->
         val uiStateSiswa by viewModel.homeUiState.collectAsState()
+
         BodyHome(
             itemSiswa = uiStateSiswa.listSiswa,
-            modifier = Modifier.padding(innerPadding)
+            onSiswaClick = navigateToItemUpdate,
+            modifier = Modifier
+                .padding(innerPadding)
                 .fillMaxSize()
         )
-
     }
 }
 
 @Composable
 fun BodyHome(
     itemSiswa: List<Siswa>,
+    onSiswaClick: (Int) -> Unit,
     modifier: Modifier = Modifier
-){
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        modifier = modifier
     ) {
-        if (itemSiswa.isEmpty()){
-            Text(stringResource(R.string.deskripsi_no_item),
+        if (itemSiswa.isEmpty()) {
+            Text(
+                text = stringResource(R.string.deskripsi_no_item),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleLarge
             )
-        }
-        else{
+        } else {
             ListSiswa(
                 itemSiswa = itemSiswa,
+                onSiswaClick = { onSiswaClick(it.id) },
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
         }
@@ -107,18 +113,18 @@ fun BodyHome(
 @Composable
 fun ListSiswa(
     itemSiswa: List<Siswa>,
+    onSiswaClick: (Siswa) -> Unit,
     modifier: Modifier = Modifier
-){
-    LazyColumn(modifier = Modifier) {
-        items(items = itemSiswa, key = {it.id}){
-                person -> DataSiswa(
-            siswa = person,
-            modifier = Modifier
-                .padding(all = 8.dp)
-        )
+) {
+    LazyColumn(modifier = modifier) {
+        items(items = itemSiswa, key = { it.id }) { person ->
+            DataSiswa(
+                siswa = person,
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+                    .clickable { onSiswaClick(person) }
+            )
         }
-
-
     }
 }
 
@@ -126,18 +132,20 @@ fun ListSiswa(
 fun DataSiswa(
     siswa: Siswa,
     modifier: Modifier = Modifier
-){
+) {
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small)))
-        {
+        Column(
+            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(siswa.nama,
+                Text(
+                    text = siswa.nama,
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -145,14 +153,15 @@ fun DataSiswa(
                     imageVector = Icons.Default.Phone,
                     contentDescription = null,
                 )
-                Text(siswa.telpon,
+                Text(
+                    text = siswa.telpon,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
-            Text(siswa.alamat,
+            Text(
+                text = siswa.alamat,
                 style = MaterialTheme.typography.titleMedium
             )
         }
-
     }
 }

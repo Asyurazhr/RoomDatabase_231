@@ -6,15 +6,12 @@ plugins {
 }
 
 android {
-    // 🔥 PENTING — GANTI INI
+    // cocokkan dengan package di semua file Kotlin
     namespace = "com.example.prak8"
-
     compileSdk = 36
 
     defaultConfig {
-        // 🔥 PENTING — GANTI INI JUGA
         applicationId = "com.example.prak8"
-
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -32,23 +29,19 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-
     kotlinOptions {
         jvmTarget = "11"
     }
-
     buildFeatures {
         compose = true
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -59,10 +52,10 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
-    // Icons
+    // icons
     implementation(libs.compose.icons)
 
-    // Room Database
+    // Room
     implementation(libs.bundles.room)
     ksp(libs.room.compiler)
 
@@ -70,16 +63,14 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.compose)
 
-    // Navigation Compose
+    // Navigation
     implementation(libs.navigation.compose)
-
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
