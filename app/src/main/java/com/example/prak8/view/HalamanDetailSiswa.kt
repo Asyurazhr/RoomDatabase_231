@@ -77,4 +77,18 @@ fun DetailSiswaScreen(
         },
         modifier = modifier
     ) { innerPadding ->
+        BodyDetailDataSiswa(
+            detailSiswaUiState = uiState,
+            onDelete = {
+                coroutineScope.launch {
+                    viewModel.deleteSiswa()
+                    navigateBack()
+                }
+            },
+            modifier = Modifier
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+        )
+    }
+}
 
